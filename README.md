@@ -1,27 +1,17 @@
+# Vagrant kubeadm k8s cluster
 
-# Vagrantfile and Scripts to Automate Kubernetes Setup using Kubeadm [Practice Environment for CKA/CKAD and CKS Exams]
+Forked from: https://github.com/techiescamp/vagrant-kubeadm-kubernetes  
 
-## Documentation
+Changes:
 
-Current k8s version for CKA, CKAD, and CKS exam: 1.27
-
-Refer to this link for documentation: https://devopscube.com/kubernetes-cluster-vagrant/
-
-## CKA, CKAD, CKS, or KCNA Coupon Codes
-
-- 🚀  CKA, CKAD, CKS, or KCNA exam aspirants can **save 65%** today using code **CYBER23CC** at https://kube.promo/cyber. It is a limited-time offer from the Linux Foundation.
-- For the best savings, opt for the CKA + CKS bundle. Use code **CYBER23CC** at https://kube.promo/bundle
-
-🎁 You will also get a free gift with every purchase.
-
-Also Check the [Linux Foundation Coupon]( https://scriptcrunch.com/linux-foundation-coupon/) page to get the latest coupons.
-
->Note: You have one year of validity to appear for the certification exam after registration
+- updated to k8s 1.28.4, standard Ubuntu Jammy
+- removed Calico and dashboard functionality, choose your own CNI
+- changed default nodes CIDR to 10.8.0.10 to avoid issues with other defaults (e.g., cilium)
 
 ## Prerequisites
 
 1. Working Vagrant setup
-2. 8 Gig + RAM workstation as the Vms use 3 vCPUS and 4+ GB RAM
+2. 12+ RAM workstation as the vms use 2+1+1+1 vCPUS and 10+ GB RAM
 
 ## For MAC/Linux Users
 
@@ -45,7 +35,7 @@ https://discuss.hashicorp.com/t/vagrant-2-2-18-osx-11-6-cannot-create-private-ne
 To provision the cluster, execute the following commands.
 
 ```shell
-git clone https://github.com/scriptcamp/vagrant-kubeadm-kubernetes.git
+git clone https://github.com/weseven/vagrant-kubeadm-kubernetes.git
 cd vagrant-kubeadm-kubernetes
 vagrant up
 ```
@@ -61,32 +51,6 @@ or you can copy the config file to .kube directory.
 
 ```shell
 cp config ~/.kube/
-```
-
-## Install Kubernetes Dashboard
-
-The dashboard is automatically installed by default, but it can be skipped by commenting out the dashboard version in _settings.yaml_ before running `vagrant up`.
-
-If you skip the dashboard installation, you can deploy it later by enabling it in _settings.yaml_ and running the following:
-```shell
-vagrant ssh -c "/vagrant/scripts/dashboard.sh" master
-```
-
-## Kubernetes Dashboard Access
-
-To get the login token, copy it from _config/token_ or run the following command:
-```shell
-kubectl -n kubernetes-dashboard get secret/admin-user -o go-template="{{.data.token | base64decode}}"
-```
-
-Proxy the dashboard:
-```shell
-kubectl proxy
-```
-
-Open the site in your browser:
-```shell
-http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/overview?namespace=kubernetes-dashboard
 ```
 
 ## To shutdown the cluster,

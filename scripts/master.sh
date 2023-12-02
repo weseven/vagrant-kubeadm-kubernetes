@@ -34,19 +34,6 @@ chmod +x $config_path/join.sh
 
 kubeadm token create --print-join-command > $config_path/join.sh
 
-# Install Calico Network Plugin
-
-curl https://raw.githubusercontent.com/projectcalico/calico/v${CALICO_VERSION}/manifests/calico.yaml -O
-
-kubectl apply -f calico.yaml
-
-sudo -i -u vagrant bash << EOF
-whoami
-mkdir -p /home/vagrant/.kube
-sudo cp -i $config_path/config /home/vagrant/.kube/
-sudo chown 1000:1000 /home/vagrant/.kube/config
-EOF
-
 # Install Metrics Server
 
 kubectl apply -f https://raw.githubusercontent.com/techiescamp/kubeadm-scripts/main/manifests/metrics-server.yaml
